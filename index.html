@@ -57,7 +57,7 @@ function sync(){state.T=+ui.temp.value;state.massU=+ui.mass.value;state.Lx=+ui.w
 ui.temp.addEventListener('input',()=>{sync();rescale(state.T);drawHist();diagnostics()});ui.tempExact.addEventListener('change',()=>{ui.temp.value=Math.max(50,Math.min(1200,+ui.tempExact.value||state.T));ui.temp.dispatchEvent(new Event('input'))});ui.count.addEventListener('input',()=>{resizeCount(+ui.count.value);sync();drawHist();diagnostics()});ui.mass.addEventListener('input',()=>{sync();rescale(state.T);drawHist();diagnostics()});ui.width.addEventListener('input',()=>{sync();particles.forEach(p=>{p.x=Math.min(state.Lx-radius,p.x);p.y=Math.min(state.Ly-radius,p.y)});draw();diagnostics()});ui.speed.addEventListener('input',sync);ui.vectors.addEventListener('change',draw);
 $('start').onclick=()=>{running=true;paused=false;$('start').disabled=true;$('pause').disabled=false;$('pause').textContent='Pause'};$('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'Resume':'Pause'};$('reset').onclick=()=>{running=false;paused=false;$('start').disabled=false;$('pause').disabled=true;$('pause').textContent='Pause';sync();init()};
 function loop(now){if(running&&!paused){const steps=Math.min(5,Math.max(1,Math.round((now-last)/16)));for(let i=0;i<steps;i++)step();draw();if(++frame%10===0){diagnostics();drawHist()}}last=now;requestAnimationFrame(loop)}
-addEventListener('resize',()=>{draw();drawHist()});sync();init();requestAnimationFrame(loop);
+addEventListener('resize',()=>{draw();drawHist()});init();sync();requestAnimationFrame(loop);
 })();
 </script>
 </body></html>
